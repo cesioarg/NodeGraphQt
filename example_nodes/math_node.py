@@ -1,19 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import math
+import wrappers.math as math
 import inspect
 from functools import partial
-
-# add basic math functions to math library
-math.add = lambda x, y: x + y
-math.sub = lambda x, y: x - y
-math.mul = lambda x, y: x * y
-math.div = lambda x, y: x / y
-
-# Transform float to functions
-for constant in ['pi', 'e', 'tau', 'inf', 'nan']:
-    setattr(math, constant, partial(lambda x: x, getattr(math, constant)))
-
 from NodeGraphQt import BaseNode
 
 
@@ -50,16 +39,19 @@ class MathFunctionsNode(BaseNode):
         Create inputs based on math functions arguments.
         """
         self.func = getattr(math, func)
-        dataFunc = inspect.getfullargspec(self.func)
+        if callable(self.func):
+            self.dataFunc = inspect.getfullargspec(self.func).args
+        else:
+            self.dataFunc = []
 
-        for arg in dataFunc.args:
+        for arg in self.dataFunc:
             if not self.has_property(arg):
                 inPort = self.add_input(arg)
                 inPort.trigger = True
                 self.create_property(arg, None)
 
         for inPort in self._inputs:
-            if inPort.name() in dataFunc.args:
+            if inPort.name() in self.dataFunc:
                 if not inPort.visible():
                     inPort.set_visible(True)
             else:
@@ -85,13 +77,35 @@ class MathFunctionsNode(BaseNode):
 
         try:
             # Execute math function with arguments.
-            data = self.func(*[self.get_property(inport.name()) for inport in self._inputs if inport.visible()])
+            args = [self.get_property(inport.name()) for inport in self._inputs if inport.visible()]
+            if callable(self.func):
+                data = self.func(*args)
+            else:
+                data = self.func
 
             self.set_property('output', data)
         except KeyError as error:
             print("An input is missing! %s" % str(error))
         except TypeError as error:
             print("Error evaluating function: %s" % str(error))
+
+        self.metacode()
+
+    def metacode(self):
+        """ Generate code for self.run(). """
+
+        for from_port in self.output_ports():
+            from_node = from_port.node().name().replace(' ', '_')
+            args = ", ".join(['%s_%s' % (from_node, arg) for arg in self.dataFunc])
+            for to_port in from_port.connected_ports():
+                nodeName = to_port.node().name().replace(' ', '_')
+                if callable(self.func):
+                    code = "%s_%s = math.%s(%s)" % (nodeName, to_port.name(),
+                                                    self.func.__name__, args)
+                else:
+                    code = "%s_%s = %s" % (nodeName, to_port.name(), self.func)
+                print(code)
+                return code
 
     def on_input_connected(self, to_port, from_port):
         """Override node callback method."""

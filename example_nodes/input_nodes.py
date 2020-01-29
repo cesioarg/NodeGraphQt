@@ -15,6 +15,17 @@ class DataInputNode(BaseNode):
         self.add_text_input('out', 'Data Output', text='0.4', tab='widgets')
         self.view.widgets['out'].value_changed.connect(self.update_streams)
 
+    def run(self):
+        return
+
+    def metacode(self):
+        for outPort in self.output_ports():
+            for to_port in outPort.connected_ports():
+                nodeName = to_port.node().name().replace(' ', '_')
+                code = "%s_%s = %s" % (nodeName, to_port.name(),
+                                       self.get_property('out'))
+                print (code)
+                return code
 
 class TickTimeNode(BaseNode):
     """

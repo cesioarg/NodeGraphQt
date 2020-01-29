@@ -12,6 +12,7 @@ class DataViewerNode(BaseNode):
 
     def run(self):
         """Evaluate input to show it."""
+
         for source in self.inPort.connected_ports():
             from_node = source.node()
             try:
@@ -31,3 +32,10 @@ class DataViewerNode(BaseNode):
     def on_input_disconnected(self, to_port, from_port):
         """Override node callback method"""
         self.set_property('data', None)
+
+    def metacode(self):
+        for to_port in self.input_ports():
+            nodeName = to_port.node().name().replace(' ', '_')
+            code = "print(%s_%s)" % (nodeName, to_port.name())
+            print (code)
+            return code

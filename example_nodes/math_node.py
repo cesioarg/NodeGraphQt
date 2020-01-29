@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import wrappers.math as math
+import example_nodes.wrappers.math as math
 import inspect
 from functools import partial
 from NodeGraphQt import BaseNode

@@ -24,6 +24,8 @@ class DataViewerNode(BaseNode):
                 return
             value = from_node.get_property(source.name())
             self.set_property('data', str(value))
+        
+        self.metacode()
 
     def on_input_connected(self, to_port, from_port):
         """Override node callback method"""

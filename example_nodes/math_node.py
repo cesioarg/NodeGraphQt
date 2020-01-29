@@ -78,10 +78,8 @@ class MathFunctionsNode(BaseNode):
         try:
             # Execute math function with arguments.
             args = [self.get_property(inport.name()) for inport in self._inputs if inport.visible()]
-            if callable(self.func):
-                data = self.func(*args)
-            else:
-                data = self.func
+            data = self.func(*args)
+
 
             self.set_property('output', data)
         except KeyError as error:
@@ -99,11 +97,8 @@ class MathFunctionsNode(BaseNode):
             args = ", ".join(['%s_%s' % (from_node, arg) for arg in self.dataFunc])
             for to_port in from_port.connected_ports():
                 nodeName = to_port.node().name().replace(' ', '_')
-                if callable(self.func):
-                    code = "%s_%s = math.%s(%s)" % (nodeName, to_port.name(),
-                                                    self.func.__name__, args)
-                else:
-                    code = "%s_%s = %s" % (nodeName, to_port.name(), self.func)
+                code = "%s_%s = math.%s(%s)" % (nodeName, to_port.name(),
+                                                self.func.__name__, args)
                 print(code)
                 return code
 

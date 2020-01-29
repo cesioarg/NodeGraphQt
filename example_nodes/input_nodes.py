@@ -14,9 +14,9 @@ class DataInputNode(BaseNode):
         self.add_output('out')
         self.add_text_input('out', 'Data Output', text='0.4', tab='widgets')
         self.view.widgets['out'].value_changed.connect(self.update_streams)
-
+    
     def run(self):
-        return
+        self.metacode()
 
     def metacode(self):
         for outPort in self.output_ports():

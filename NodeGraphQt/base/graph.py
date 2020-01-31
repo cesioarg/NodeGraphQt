@@ -23,6 +23,29 @@ from NodeGraphQt.constants import (DRAG_DROP_ID,
 from NodeGraphQt.widgets.viewer import NodeViewer
 
 
+class QWidgetDrops(QtWidgets.QWidget):
+    def dragEnterEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        if event.mimeData().hasUrls:
+            event.setDropAction(QtCore.Qt.CopyAction)
+            event.accept()
+            for url in event.mimeData().urls():
+                self.import_session(url.toLocalFile())
+        else:
+            e.ignore()
+
+
 class NodeGraph(QtCore.QObject):
     """
     The ``NodeGraph`` class is the main controller for managing all nodes.
@@ -111,6 +134,7 @@ class NodeGraph(QtCore.QObject):
         self._viewer.addAction(tab)
 
         self._wire_signals()
+        self.widget.setAcceptDrops(True)
 
     def __repr__(self):
         return '<{} object at {}>'.format(self.__class__.__name__, hex(id(self)))
@@ -127,6 +151,9 @@ class NodeGraph(QtCore.QObject):
         # pass through signals.
         self._viewer.node_selected.connect(self._on_node_selected)
         self._viewer.data_dropped.connect(self._on_node_data_dropped)
+
+    def dropEvent(self, event):
+        raise Exception("Mierda")
 
     def _insert_node(self, pipe, node_id, prev_node_pos):
         """
@@ -325,7 +352,9 @@ class NodeGraph(QtCore.QObject):
             PySide2.QtWidgets.QWidget: node graph widget.
         """
         if self._widget is None:
-            self._widget = QtWidgets.QWidget()
+            self._widget = QWidgetDrops()
+            self._widget.import_session = self.import_session
+            
             layout = QtWidgets.QVBoxLayout(self._widget)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.addWidget(self._viewer)

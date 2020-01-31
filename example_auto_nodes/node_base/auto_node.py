@@ -2,6 +2,7 @@ from NodeGraphQt.base.node import BaseNode
 from NodeGraphQt.base.port import Port
 from NodeGraphQt.constants import NODE_PROP
 from NodeGraphQt import QtCore
+import hashlib
 import random
 import copy
 
@@ -14,6 +15,18 @@ def rand_color(seed_type):
     g = random.randint(50, 200)
     random.seed(seed + 3421)
     b = random.randint(50, 200)
+    return (r, g, b, 255)
+
+
+# random color based on strings
+def rand_color_from_text(text, Min=50, Max=200):
+    h = hashlib.sha256(text.encode('utf-8')).hexdigest()
+    d = int('0xFFFFFFFFFFFFFFFF', 0)
+    r = int(Min + (int("0x" + h[:16], 0) / d) * (Max - Min))
+    g = int(Min + (int("0x" + h[16:32], 0) / d) * (Max - Min))
+    b = int(Min + (int("0x" + h[32:48], 0) / d) * (Max - Min))
+    a = int(Min + (int("0x" + h[48:], 0) / d) * (Max - Min))
+    #return (r, g, b, a)
     return (r, g, b, 255)
 
 
@@ -172,8 +185,8 @@ class AutoNode(BaseNode,QtCore.QObject):
             else:
                 current_port.DataType = value_type
 
-            current_port.border_color = rand_color(value_type)
-            current_port.color = rand_color(value_type)
+            current_port.border_color = rand_color_from_text(str(value_type))
+            current_port.color = rand_color_from_text(str(value_type))
             conn_type = 'multi' if current_port.multi_connection() else 'single'
             data_type_name = value_type.__name__ if value_type else "all"
             current_port.view.setToolTip('{}: {} ({}) '.format(current_port.name(), data_type_name, conn_type))

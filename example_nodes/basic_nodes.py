@@ -48,3 +48,23 @@ class BarNode(BaseNode):
         self.add_output('single out 1', multi_output=False)
         self.add_output('single out 2', multi_output=False)
         self.add_output('multi out')
+
+class SelfNode(BaseNode):
+    """
+    A node class with 3 inputs and 3 outputs.
+    The last input and last output can take in multiple pipes.
+    """
+
+    # unique node identifier.
+    __identifier__ = 'Util'
+
+    # initial default node name.
+    NODE_NAME = 'MetaNode'
+
+    def __init__(self):
+        super(SelfNode, self).__init__()
+        self.add_output('out')
+        self.create_property('out', None)
+
+    def run(self):
+        self.set_property('out', self)

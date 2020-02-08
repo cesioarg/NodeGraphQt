@@ -42,27 +42,24 @@ class ModuleNode(AutoNode):
     module node.
     """
 
-    module_functions = {}
+    def __init__(self, defaultInputType=None,defaultOutputType=None, module_functions=None):
+        super(ModuleNode, self).__init__(defaultInputType, defaultOutputType)
+        self.add_combo_menu('funcs', 'Functions', items=["None"])
+        self.view.widgets['funcs'].hide()
+        self.out = self.add_output('out')
+        self.create_property('out', None)
 
-    def __init__(self,defaultInputType=None,defaultOutputType=None):
-        super(ModuleNode, self).__init__(defaultInputType,defaultOutputType)
-        self.add_combo_menu('funcs', 'Functions', items=list(self.module_functions.keys()))
+        if module_functions:
+            self.buildNode(module_functions)
 
-        # switch math function type
+    def buildNode(self, module_functions):
+        self.module_functions = module_functions
+        self.view.widgets['funcs'].widget.clear()
+        self.view.widgets['funcs'].widget.addItems(list(module_functions.keys()))
+        self.view.widgets['funcs'].show()
         self.view.widgets['funcs'].value_changed.connect(self.addFunction)
-        self.add_output('output')
-        self.create_property('output', None)
-
         self.view.widgets['funcs'].widget.setCurrentIndex(0)
         self.addFunction(None, self.view.widgets['funcs'].widget.currentText())
-
-    def is_function(self,obj):
-        if inspect.isfunction(self.func) or inspect.isbuiltin(self.func):
-            return True
-        elif "method" in type(obj).__name__  or "function" in type(obj).__name__:
-            return True
-
-        return False
 
     def addFunction(self, prop, func):
         """
@@ -72,7 +69,7 @@ class ModuleNode(AutoNode):
         self.func = self.module_functions[func]
 
         args = []
-        if self.is_function(self.func):
+        if callable(self.func):
             try:
                 args = inspect.getfullargspec(self.func).args
             except:
@@ -80,7 +77,7 @@ class ModuleNode(AutoNode):
 
         self.process_args(args)
 
-    def process_args(self,in_args, out_args = None):
+    def process_args(self,in_args, out_args=None):
         for arg in in_args:
             if arg not in self.inputs().keys():
                 self.add_input(arg)
@@ -123,7 +120,7 @@ class ModuleNode(AutoNode):
 
         try:
             # Execute function with arguments.
-            if self.is_function(self.func):
+            if callable(self.func):
                 data = self.func(*args)
             else:
                 data = self.func

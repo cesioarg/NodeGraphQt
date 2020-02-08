@@ -8,6 +8,7 @@ import random
 import numpy
 import numpydoc.docscrape
 import inspect
+import importlib
 
 from .wrappers import math as _math
 from .wrappers import list as _list
@@ -27,10 +28,10 @@ class MathModuleNode(ModuleNode):
     # set the initial default node name.
     NODE_NAME = 'math module'
 
-    module_functions = get_functions_from_type(_math)
+    module_functions = get_functions_from_module(_math)
 
     def __init__(self):
-        super(MathModuleNode, self).__init__(float, float)
+        super(MathModuleNode, self).__init__(float, float, module_functions=self.module_functions)
         self.defaultValue = 0.0
 
 
@@ -49,7 +50,7 @@ class osModuleNode(ModuleNode):
     module_functions.pop("os.abort")
 
     def __init__(self):
-        super(osModuleNode, self).__init__()
+        super(osModuleNode, self).__init__(module_functions=self.module_functions)
 
 
 class sysModuleNode(ModuleNode):
@@ -68,7 +69,7 @@ class sysModuleNode(ModuleNode):
     module_functions.pop("sys.breakpointhook")
 
     def __init__(self):
-        super(sysModuleNode, self).__init__()
+        super(sysModuleNode, self).__init__(module_functions=self.module_functions)
 
 
 class randomModuleNode(ModuleNode):
@@ -85,7 +86,7 @@ class randomModuleNode(ModuleNode):
     module_functions = get_functions_from_module(random, max_depth=2)
 
     def __init__(self):
-        super(randomModuleNode, self).__init__()
+        super(randomModuleNode, self).__init__(module_functions=self.module_functions)
 
 
 class numpyModuleNode(ModuleNode):
@@ -102,16 +103,8 @@ class numpyModuleNode(ModuleNode):
     module_functions = get_functions_from_module(numpy, max_depth=2)
 
     def __init__(self):
-        super(numpyModuleNode, self).__init__()
+        super(numpyModuleNode, self).__init__(module_functions=self.module_functions)
         self.set_icon("example_auto_nodes/icons/numpy.png")
-
-    def is_function(self, obj):
-        result = super(numpyModuleNode, self).is_function(obj)
-        if result:
-            return True
-        elif type(obj).__name__ == "ufunc":
-            return True
-        return False
 
     def get_numpy_args(self, func):
         args = []
@@ -130,7 +123,7 @@ class numpyModuleNode(ModuleNode):
         self.func = self.module_functions[func]
 
         args = []
-        if self.is_function(self.func):
+        if callable(self.func):
             try:
                 args = inspect.getfullargspec(self.func).args
             except:
@@ -158,7 +151,7 @@ class StringFunctionsNode(ModuleNode):
 
 
     def __init__(self):
-        super(StringFunctionsNode, self).__init__()
+        super(StringFunctionsNode, self).__init__(module_functions=self.module_functions)
 
 
 class ListFunctionsNode(ModuleNode):
@@ -175,7 +168,7 @@ class ListFunctionsNode(ModuleNode):
     module_functions = get_functions_from_type(_list)
 
     def __init__(self):
-        super(ListFunctionsNode, self).__init__()
+        super(ListFunctionsNode, self).__init__(module_functions=self.module_functions)
 
 
 class DictFunctionsNode(ModuleNode):
@@ -192,7 +185,7 @@ class DictFunctionsNode(ModuleNode):
     module_functions = get_functions_from_type(_dict)
 
     def __init__(self):
-        super(DictFunctionsNode, self).__init__()
+        super(DictFunctionsNode, self).__init__(module_functions=self.module_functions)
 
 
 class TupleFunctionsNode(ModuleNode):
@@ -209,7 +202,37 @@ class TupleFunctionsNode(ModuleNode):
     module_functions = get_functions_from_type(_tuple)
 
     def __init__(self):
-        super(TupleFunctionsNode, self).__init__()
+        super(TupleFunctionsNode, self).__init__(module_functions=self.module_functions)
+
+
+class ImportNode(ModuleNode):
+    """
+    import function node.
+    """
+
+    # set a unique node identifier.
+    __identifier__ = 'Module'
+
+    # set the initial default node name.
+    NODE_NAME = 'Import'
+
+    def __init__(self):
+        super(ImportNode, self).__init__()
+        self.add_text_input('module', 'Import Module')
+        self.view.widgets['module'].value_changed.connect(self.morph)
+        
+    def morph(self):
+        try:
+            name = self.get_property('module')
+            self.view.widgets['module'].value_changed.disconnect()
+            self.view.widgets['module'].hide()
+            mod = importlib.import_module(name)
+            self.set_name("Import (%s)" % name)
+        except:
+            raise Exception("No module Found!")
+
+        module_functions = get_functions_from_type(mod)
+        self.buildNode(module_functions)
 
 
 if __name__ == "__main__":

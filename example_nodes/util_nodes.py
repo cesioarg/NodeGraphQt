@@ -134,3 +134,24 @@ class ObjectWrapperNode(BaseNode):
         comboBox = self.view.widgets['methods'].widget
         comboBox.clear()
         self.update_streams()
+
+
+class SelfNode(BaseNode):
+    """
+    A node class with 3 inputs and 3 outputs.
+    The last input and last output can take in multiple pipes.
+    """
+
+    # unique node identifier.
+    __identifier__ = 'Util'
+
+    # initial default node name.
+    NODE_NAME = 'MetaNode'
+
+    def __init__(self):
+        super(SelfNode, self).__init__()
+        self.add_output('out')
+        self.create_property('out', None)
+
+    def run(self):
+        self.set_property('out', self)

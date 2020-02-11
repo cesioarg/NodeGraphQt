@@ -1051,11 +1051,19 @@ class NodeGraph(QtCore.QObject):
         Args:
             file_path (str): path to the serialized layout file.
         """
+        self.clear_session()
+        self.import_session(file_path)
+
+    def import_session(self, file_path):
+        """
+        Import node graph session layout file.
+
+        Args:
+            file_path (str): path to the serialized layout file.
+        """
         file_path = file_path.strip()
         if not os.path.isfile(file_path):
             raise IOError('file does not exist.')
-
-        self.clear_session()
 
         try:
             with open(file_path) as data_file:

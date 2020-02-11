@@ -1,6 +1,6 @@
 {
   "nodes":{
-    "0x150eccc8":{
+    "0x15095e08":{
       "type_":"Viewers.DataViewerNode",
       "icon":null,
       "name":"Output",
@@ -27,14 +27,14 @@
       "width":170,
       "height":91.0,
       "pos":[
-        602.4100268187593,
-        341.7567828173967
+        149.0,
+        -146.0
       ],
       "custom":{
         "data":""
       }
     },
-    "0x150f5588":{
+    "0x15126848":{
       "type_":"Inputs.BoolInputNode",
       "icon":null,
       "name":"Bool",
@@ -61,15 +61,15 @@
       "width":170,
       "height":103.0,
       "pos":[
-        40.41002681875926,
-        275.7567828173967
+        -413.0,
+        -212.0
       ],
       "custom":{
         "out":true,
         "combo":"True"
       }
     },
-    "0x150f5d88":{
+    "0x15140308":{
       "type_":"Logics.BooleanNode",
       "icon":null,
       "name":"Boolean",
@@ -96,15 +96,15 @@
       "width":170,
       "height":103.0,
       "pos":[
-        310.41002681875943,
-        338.7567828173967
+        -143.0,
+        -149.0
       ],
       "custom":{
         "out":null,
         "funcs":"and"
       }
     },
-    "0x1510e948":{
+    "0x1514a4c8":{
       "type_":"Inputs.BoolInputNode",
       "icon":null,
       "name":"Bool 1",
@@ -131,8 +131,8 @@
       "width":170,
       "height":103.0,
       "pos":[
-        42.16002681875926,
-        426.2567828173967
+        -411.25,
+        -61.5
       ],
       "custom":{
         "out":true,
@@ -143,31 +143,31 @@
   "connections":[
     {
       "in":[
-        "0x150eccc8",
+        "0x15095e08",
         "data"
       ],
       "out":[
-        "0x150f5d88",
+        "0x15140308",
         "out"
       ]
     },
     {
       "out":[
-        "0x150f5588",
+        "0x15126848",
         "out"
       ],
       "in":[
-        "0x150f5d88",
+        "0x15140308",
         "a"
       ]
     },
     {
       "in":[
-        "0x150f5d88",
+        "0x15140308",
         "b"
       ],
       "out":[
-        "0x1510e948",
+        "0x1514a4c8",
         "out"
       ]
     }

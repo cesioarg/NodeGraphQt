@@ -150,8 +150,8 @@ class SelfNode(BaseNode):
 
     def __init__(self):
         super(SelfNode, self).__init__()
-        self.add_output('out')
-        self.create_property('out', None)
+        self.add_output('self')
+        self.create_property('self', None)
 
     def run(self):
-        self.set_property('out', self)
+        self.set_property('self', self)

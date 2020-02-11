@@ -48,7 +48,7 @@ class VectorMaker(AutoNode):
         super(VectorMaker, self).__init__()
 
         self.add_output('out', list)
-        self.create_property("out",None)
+        self.create_property("out", None)
 
         self.add_input("x", float)
         self.add_input("y", float)
@@ -65,41 +65,38 @@ class VectorMaker(AutoNode):
         self.set_property("out", result)
 
 
-class DataConvect(AutoNode):
+class DataConvert(AutoNode):
     """
-    Create a vector by three float value
+    Convert input to selected object type.
     """
 
     __identifier__ = 'Data'
-    NODE_NAME = 'Data Convect'
+
+    NODE_NAME = 'Data Convert'
+
+    convertion = {
+        "eval string": eval,
+        "all to int": int,
+        "all to float": float,
+        "all to string": str,
+        "all to list": list,
+        "all to set": set,
+        "all to dict": dict,
+    }
 
     def __init__(self):
-        super(DataConvect, self).__init__()
-
+        super(DataConvert, self).__init__()
         self.add_output('out')
         self.create_property("out", None)
         self.add_input("in data")
-
-        items = ["all to int"]
-        items.append("all to float")
-        items.append("all to string")
-        items.append("eval string")
-        items.append("all to list")
-        self.add_combo_menu('method', 'Method', items=items)
+        self.add_combo_menu('method',
+                            'Method',
+                            items=list(self.convertion.keys()))
 
     def run(self):
         method = self.get_property("method")
         try:
-            if method == "all to int":
-                data = int(float(self.getInputData(0)))
-            elif method == "all to float":
-                data = float(self.getInputData(0))
-            elif method == "all to string":
-                data = str(self.getInputData(0))
-            elif method == "eval string":
-                data = eval(self.getInputData(0))
-            elif method == "all to list":
-                data = list(self.getInputData(0))
+            data = self.convertion[method](self.getInputData(0))
             self.set_property("out", data)
         except Exception as error:
             self.error(error)

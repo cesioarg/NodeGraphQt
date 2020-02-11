@@ -40,7 +40,7 @@ if __name__ == '__main__':
     graph.node_double_clicked.connect(show_nodes_list)
 
     # registered nodes.
-    [graph.register_node(n) for n in Nodes] 
-    graph.load_session('example.nodes')
+    [graph.register_node(n) for n in Nodes]
+    graph.load_session(r'example_nodes\networks\example.nodes')
 
     app.exec_()

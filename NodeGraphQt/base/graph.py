@@ -43,7 +43,7 @@ class QWidgetDrops(QtWidgets.QWidget):
             for url in event.mimeData().urls():
                 self.import_session(url.toLocalFile())
         else:
-            e.ignore()
+            event.ignore()
 
 
 class NodeGraph(QtCore.QObject):
@@ -66,7 +66,7 @@ class NodeGraph(QtCore.QObject):
     nodes_deleted = QtCore.Signal(list)
     """
     Signal triggered when nodes have been deleted from the node graph.
-
+    
     :parameters: list[str]
     :emits: list of deleted node ids.
     """
@@ -150,9 +150,6 @@ class NodeGraph(QtCore.QObject):
         # pass through signals.
         self._viewer.node_selected.connect(self._on_node_selected)
         self._viewer.data_dropped.connect(self._on_node_data_dropped)
-
-    def dropEvent(self, event):
-        raise Exception("Mierda")
 
     def _insert_node(self, pipe, node_id, prev_node_pos):
         """
@@ -354,7 +351,6 @@ class NodeGraph(QtCore.QObject):
         if self._widget is None:
             self._widget = QWidgetDrops()
             self._widget.import_session = self.import_session
-            
             layout = QtWidgets.QVBoxLayout(self._widget)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.addWidget(self._viewer)
@@ -1075,7 +1071,7 @@ class NodeGraph(QtCore.QObject):
     def load_session(self, file_path):
         """
         Load node graph session layout file.
-
+        
         Args:
             file_path (str): path to the serialized layout file.
         """
@@ -1085,10 +1081,11 @@ class NodeGraph(QtCore.QObject):
     def import_session(self, file_path):
         """
         Import node graph session layout file.
-
+        
         Args:
             file_path (str): path to the serialized layout file.
         """
+        
         file_path = file_path.strip()
         if not os.path.isfile(file_path):
             raise IOError('file does not exist.')
@@ -1167,7 +1164,7 @@ class NodeGraph(QtCore.QObject):
 
         self._undo_stack.endMacro()
         return new_nodes
-
+    
     def disable_nodes(self, nodes, mode=None):
         """
         Set weather to Disable or Enable specified nodes.

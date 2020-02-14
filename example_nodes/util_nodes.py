@@ -52,21 +52,20 @@ class ObjectWrapperNode(BaseNode):
         self.funcName = func
         obj = self.get_property('self')
         func = getattr(obj, self.funcName)
-
+        
         if callable(func):
             dataFunc = inspect.getfullargspec(func)
-            for arg in dataFunc.args:
-                print(arg, self.has_property(arg))
-                if not self.has_property(arg):
-                    inPort = self.add_input(arg)
-                    self.create_property(arg, None)
+        for arg in dataFunc.args:
+            if not self.has_property(arg):
+                inPort = self.add_input(arg)
+                self.create_property(arg, None)
 
-            for inPort in self._inputs:
-                if inPort.name() in dataFunc.args:
-                    if not inPort.visible():
-                        inPort.set_visible(True)
-                else:
-                    inPort.set_visible(False)
+        for inPort in self._inputs:
+            if inPort.name() in dataFunc.args:
+                if not inPort.visible():
+                    inPort.set_visible(True)
+            else:
+                inPort.set_visible(False)
         else:
             for inPort in self._inputs:
                 if inPort.name() != 'self':
@@ -155,3 +154,4 @@ class SelfNode(BaseNode):
 
     def run(self):
         self.set_property('self', self)
+        

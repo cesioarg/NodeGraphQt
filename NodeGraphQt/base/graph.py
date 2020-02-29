@@ -352,10 +352,6 @@ class NodeGraph(QtCore.QObject):
         if self._widget is None:
             self._widget = QWidgetDrops()
             self._widget.import_session = self.import_session
-<<<<<<< HEAD
-=======
-
->>>>>>> 91314297a63ff25bffd5892ad9d2d02f11b0a656
             layout = QtWidgets.QVBoxLayout(self._widget)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.addWidget(self._viewer)

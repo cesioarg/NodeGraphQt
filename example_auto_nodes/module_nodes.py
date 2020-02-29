@@ -15,6 +15,7 @@ from .wrappers import list as _list
 from .wrappers import dict as _dict
 from .wrappers import str as _str
 from .wrappers import tuple as _tuple
+from .wrappers import buildin as _buildin
 
 
 class MathModuleNode(ModuleNode):
@@ -204,6 +205,23 @@ class TupleFunctionsNode(ModuleNode):
     def __init__(self):
         super(TupleFunctionsNode, self).__init__(module_functions=self.module_functions)
 
+
+class BuildinsFunctionsNode(ModuleNode):
+    """
+    Python Buildin functions node.
+    """
+
+    # set a unique node identifier.
+    __identifier__ = 'Data'
+
+    # set the initial default node name.
+    NODE_NAME = 'Buildin Functions'
+
+    module_functions = get_functions_from_type(_buildin)
+
+    def __init__(self):
+        super(BuildinsFunctionsNode, self).__init__(module_functions=self.module_functions)
+        
 
 class ImportNode(ModuleNode):
     """

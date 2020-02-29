@@ -2,12 +2,12 @@
 import json
 from collections import defaultdict
 
-from NodeGraphQt.constants import (NODE_PROP,
-                                   NODE_PROP_QLABEL,
-                                   NODE_PROP_QLINEEDIT,
-                                   NODE_PROP_QCHECKBOX,
-                                   NODE_PROP_COLORPICKER)
-from NodeGraphQt.errors import NodePropertyError
+from ..constants import (NODE_PROP,
+                        NODE_PROP_QLABEL,
+                        NODE_PROP_QLINEEDIT,
+                        NODE_PROP_QCHECKBOX,
+                        NODE_PROP_COLORPICKER)
+from ..errors import NodePropertyError
 
 
 class PortModel(object):
@@ -92,7 +92,8 @@ class NodeModel(object):
         }
 
     def add_property(self, name, value, items=None, range=None,
-                     widget_type=NODE_PROP, tab='Properties', ext=None):
+                     widget_type=NODE_PROP, tab='Properties',
+                     ext=None, funcs=None):
         """
         add custom property.
 
@@ -104,6 +105,7 @@ class NodeModel(object):
             widget_type (int): widget type flag.
             tab (str): widget tab name.
             ext (str) file ext for NODE_PROP_FILE
+            funcs (list) functions for NODE_PROP_BUTTON
         """
         tab = tab or 'Properties'
 
@@ -125,6 +127,8 @@ class NodeModel(object):
                 self._TEMP_property_attrs[name]['range'] = range
             if ext:
                 self._TEMP_property_attrs[name]['ext'] = ext
+            if funcs:
+                self._TEMP_property_attrs[name]['funcs'] = funcs
         else:
             attrs = {self.type_: {name: {
                 'widget_type': widget_type,
@@ -136,6 +140,8 @@ class NodeModel(object):
                 attrs[self.type_][name]['range'] = range
             if ext:
                 attrs[self.type_][name]['ext'] = ext
+            if funcs:
+                attrs[self.type_][name]['funcs'] = funcs
             self._graph_model.set_node_common_properties(attrs)
 
     def set_property(self, name, value):
@@ -144,7 +150,8 @@ class NodeModel(object):
         elif name in self._custom_prop.keys():
             self._custom_prop[name] = value
         else:
-            raise NodePropertyError('No property "{}"'.format(name))
+            self._custom_prop[name] = value
+            # raise NodePropertyError('No property "{}"'.format(name))
 
     def get_property(self, name):
         if name in self.properties.keys():
@@ -248,6 +255,7 @@ class NodeModel(object):
                         json.dumps(v)
                     except:
                         to_remove.append(k)
+
             [custom_props.pop(k) for k in to_remove]
 
             node_dict['custom'] = custom_props

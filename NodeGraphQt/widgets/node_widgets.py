@@ -1,10 +1,10 @@
 #!/usr/bin/python
-from NodeGraphQt import QtCore, QtWidgets, QtGui
+from .. import QtCore, QtWidgets
 
-from NodeGraphQt.constants import Z_VAL_NODE_WIDGET
-from NodeGraphQt.widgets.stylesheet import *
-from NodeGraphQt.widgets.file_dialog import file_dialog
-from NodeGraphQt.widgets.properties import _valueEdit
+from ..constants import Z_VAL_NODE_WIDGET
+from .stylesheet import *
+from .file_dialog import file_dialog
+from .properties import _valueEdit
 
 
 class _NodeGroupBox(QtWidgets.QGroupBox):
@@ -192,6 +192,10 @@ class NodeComboBox(NodeBaseWidget):
 
     @value.setter
     def value(self, text=''):
+        if type(text) is list:
+            self._combo.clear()
+            self._combo.addItems(text)
+            return
         if text != self.value:
             index = self._combo.findText(text, QtCore.Qt.MatchExactly)
             self._combo.setCurrentIndex(index)

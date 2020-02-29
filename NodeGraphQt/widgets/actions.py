@@ -1,6 +1,6 @@
 #!/usr/bin/python
-from NodeGraphQt import QtCore, QtWidgets
-from NodeGraphQt.widgets.stylesheet import STYLE_QMENU
+from .. import QtCore, QtWidgets
+from .stylesheet import STYLE_QMENU
 
 
 class BaseMenu(QtWidgets.QMenu):
@@ -27,7 +27,7 @@ class BaseMenu(QtWidgets.QMenu):
                 return menu
             if node_id and menu.node_class:
                 node = menu.graph.get_node_by_id(node_id)
-                if isinstance(node,menu.node_class):
+                if isinstance(node, menu.node_class):
                     return menu
 
     def get_menus(self, node_class):
@@ -35,7 +35,7 @@ class BaseMenu(QtWidgets.QMenu):
         for action in self.actions():
             menu = action.menu()
             if menu.node_class:
-                if issubclass(menu.node_class,node_class):
+                if issubclass(menu.node_class, node_class):
                     menus.append(menu)
         return menus
 

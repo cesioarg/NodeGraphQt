@@ -5,22 +5,22 @@ import os
 import re
 import copy
 
-from NodeGraphQt import QtCore, QtWidgets, QtGui
-from NodeGraphQt.base.commands import (NodeAddedCmd,
-                                       NodeRemovedCmd,
-                                       NodeMovedCmd,
-                                       PortConnectedCmd)
-from NodeGraphQt.base.factory import NodeFactory
-from NodeGraphQt.base.menu import NodeGraphMenu, NodesMenu
-from NodeGraphQt.base.model import NodeGraphModel
-from NodeGraphQt.base.node import NodeObject, BaseNode
-from NodeGraphQt.base.port import Port
-from NodeGraphQt.constants import (DRAG_DROP_ID,
-                                   PIPE_LAYOUT_CURVED,
-                                   PIPE_LAYOUT_STRAIGHT,
-                                   PIPE_LAYOUT_ANGLE,
-                                   IN_PORT, OUT_PORT)
-from NodeGraphQt.widgets.viewer import NodeViewer
+from .. import QtCore, QtWidgets, QtGui
+from .commands import (NodeAddedCmd,
+                       NodeRemovedCmd,
+                       NodeMovedCmd,
+                       PortConnectedCmd)
+from .factory import NodeFactory
+from .menu import NodeGraphMenu, NodesMenu
+from .model import NodeGraphModel
+from .node import NodeObject, BaseNode
+from .port import Port
+from ..constants import (DRAG_DROP_ID,
+                         PIPE_LAYOUT_CURVED,
+                         PIPE_LAYOUT_STRAIGHT,
+                         PIPE_LAYOUT_ANGLE,
+                         IN_PORT, OUT_PORT)
+from ..widgets.viewer import NodeViewer
 
 
 class QWidgetDrops(QtWidgets.QWidget):
@@ -119,6 +119,7 @@ class NodeGraph(QtCore.QObject):
     :parameters: :str
     :emits: new session path
     """
+
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
         self.setObjectName('NodeGraphQt')
@@ -204,7 +205,7 @@ class NodeGraph(QtCore.QObject):
         node = self.get_node_by_id(node_id)
 
         # prevent signals from causing a infinite loop.
-        _exc = [float, int , str, bool, None]
+        _exc = [float, int, str, bool, None]
         if node.get_property(prop_name) != prop_value:
             if type(node.get_property(prop_name)) in _exc:
                 value = prop_value
@@ -351,6 +352,10 @@ class NodeGraph(QtCore.QObject):
         if self._widget is None:
             self._widget = QWidgetDrops()
             self._widget.import_session = self.import_session
+<<<<<<< HEAD
+=======
+
+>>>>>>> 91314297a63ff25bffd5892ad9d2d02f11b0a656
             layout = QtWidgets.QVBoxLayout(self._widget)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.addWidget(self._viewer)
@@ -773,7 +778,7 @@ class NodeGraph(QtCore.QObject):
                 node_attrs[node.type_][pname].update(pattrs)
             self.model.set_node_common_properties(node_attrs)
 
-        node._graph = self
+        node.set_graph(self)
         node.NODE_NAME = self.get_unique_name(node.NODE_NAME)
         node.model._graph_model = self.model
         node.model.name = node.NODE_NAME
@@ -1005,6 +1010,7 @@ class NodeGraph(QtCore.QObject):
 
                 nodes[n_id] = node
                 self.add_node(node, n_data.get('pos'))
+                node.set_graph(self)
 
         # build the connections.
         for connection in data.get('connections', []):
@@ -1085,7 +1091,7 @@ class NodeGraph(QtCore.QObject):
         Args:
             file_path (str): path to the serialized layout file.
         """
-        
+
         file_path = file_path.strip()
         if not os.path.isfile(file_path):
             raise IOError('file does not exist.')

@@ -27,9 +27,10 @@ class VectorSplit(AutoNode):
         self.map = {0: "x", 1: "y", 2: "z", 3: "w"}
 
     def run(self):
-        value = self.getInputData(0)
+        value = self.get_input_data(0)
         if type(value) is not list:
             self.error("Input data not list")
+            return
         for index, data in enumerate(value):
             if index > 3:
                 return
@@ -58,7 +59,7 @@ class VectorMaker(AutoNode):
     def run(self):
         result = []
         for i in range(4):
-            data = self.getInputData(i)
+            data = self.get_input_data(i)
             if data is not None:
                 result.append(data)
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from example_nodes import Nodes
 from NodeGraphQt import (NodeGraph,
-                         BaseNode,
+                         update_nodes_by_down,
                          setup_context_menu)
 from NodeGraphQt import QtWidgets, QtCore, PropertiesBinWidget, NodeTreeWidget
 
@@ -41,6 +41,11 @@ if __name__ == '__main__':
 
     # registered nodes.
     [graph.register_node(n) for n in Nodes]
+
+    # load preset session
     graph.load_session(r'example_nodes\networks\example.nodes')
+
+    # update nodes
+    update_nodes_by_down(graph.all_nodes())
 
     app.exec_()

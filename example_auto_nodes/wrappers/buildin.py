@@ -1,205 +1,205 @@
 import sys
 
 
-def abs(x):
+def _abs(x):
     return abs(x)
 
 
-def all(iterable):
+def _all(iterable):
     return all(iterable)
 
 
-def any(iterable):
+def _any(iterable):
     return any(iterable)
 
 
-def ascii(object):
+def _ascii(object):
     return ascii(object)
 
 
-def bin(x):
+def _bin(x):
     return bin(x)
 
 
-def bool(x):
+def _bool(x):
     return bool(x)
 
 
-def breakpoint(*args, **kws):
+def _breakpoint(*args, **kws):
     return breakpoint(*args, **kws)
 
 
-def bytearray(source, encoding, errors):
+def _bytearray(source, encoding, errors):
     return bytearray(source, encoding, errors)
 
 
-def bytes(source, encoding, errors):
+def _bytes(source, encoding, errors):
     return bytes(source, encoding, errors)
 
 
-def callable(object):
+def _callable(object):
     return callable(object)
 
 
-def chr(i):
+def _chr(i):
     return chr(i)
 
 
-def classmethod():
+def _classmethod():
     raise NotImplementedError
 
 
-def compile(source, filename, mode, flags=0, dont_inherit=False, optimize=-1):
+def _compile(source, filename, mode, flags=0, dont_inherit=False, optimize=-1):
     return compile(source, filename, mode, flags, dont_inherit, optimize)
 
 
-def complex(real, imag):
+def _complex(real, imag):
     return complex(real, imag)
 
 
-def delattr(object, name):
+def _delattr(object, name):
     return delattr(object, name)
 
 
-def dict(iterable, **kwarg):
+def _dict(iterable, **kwarg):
     return dict(iterable, **kwarg)
 
 
-def dir(object):
+def _dir(object):
     return dir(object)
 
 
-def divmod(a, b):
+def _divmod(a, b):
     return divmod(a, b)
 
 
-def enumerate(iterable, start=0):
+def _enumerate(iterable, start=0):
     return enumerate(iterable, start)
 
 
-def eval(expression, globals=globals(), locals=locals()):
+def _eval(expression, globals=globals(), locals=locals()):
     return eval(expression, globals, locals)
 
 
-def exec(object, globals=globals(), locals=locals()):
+def _exec(object, globals=globals(), locals=locals()):
     return exec(object, globals, locals)
 
 
-def filter(function, iterable):
+def _filter(function, iterable):
     return filter(function, iterable)
 
 
-def float(x):
+def _float(x):
     return float(x)
 
 
-def format(value, format_spec=""):
+def _format(value, format_spec=""):
     return format(value, format_spec)
 
 
-def frozenset(iterable=None):
+def _frozenset(iterable=None):
     return frozenset(iterable)
 
 
-def getattr(object, name, default=None):
+def _getattr(object, name, default=None):
     return getattr(object, name, default)
 
 
-def globals():
+def _globals():
     return globals()
 
 
-def hasattr(object, name):
+def _hasattr(object, name):
     return hasattr(object, name)
 
     
-def hash(object):
+def _hash(object):
     return hash(object)
 
 
-def help(object):
+def _help(object):
     return help(object)
 
 
-def hex(x):
+def _hex(x):
     return hex(x)
 
 
-def id(object):
+def _id(object):
     return id(object)
 
 
-def input(prompt=''):
+def _input(prompt=''):
     return input(prompt)
 
 
-def int(x, base=10):
+def _int(x, base=10):
     return int(x, base)
 
 
-def isinstance(object, classinfo):
+def _isinstance(object, classinfo):
     return isinstance(object, classinfo)
 
 
-def issubclass(clss, classinfo):
+def _issubclass(clss, classinfo):
     return issubclass(clss, classinfo)
 
 
-def iter(object):
+def _iter(object):
     return iter(object)
 
 
-def len(s):
+def _len(s):
     return len(s)
 
 
-def list(iterable=[]):
+def _list(iterable=[]):
     return list(iterable)
 
 
-def locals():
+def _locals():
     return locals()
 
 
-def map(function, iterable):
+def _map(function, iterable):
     return map(function, iterable)
 
 
-def max(iterable):
+def _max(iterable):
     return max(iterable)
 
 
-def memoryview(obj):
+def _memoryview(obj):
     return memoryview(obj)
 
 
-def min(iterable):
+def _min(iterable):
     return min(iterable)
 
 
-def next(iterator, default=None):
+def _next(iterator, default=None):
     return next(iterator, default)
 
 
-def oct(x):
+def _oct(x):
     return oct(x)
 
 
-def open(file, mode='r', buffering=-1, encoding=None,
-         errors=None, newline=None, closefd=True, opener=None):
+def _open(file, mode='r', buffering=-1, encoding=None,
+          errors=None, newline=None, closefd=True, opener=None):
     return open(file, mode, buffering, encoding,
                 errors, newline, closefd, opener)
 
 
-def ord(c):
+def _ord(c):
     return ord(c)
 
 
-def pow(base, exp, mod=1):
+def _pow(base, exp, mod=1):
     return pow(base, exp, mod)
 
 
-def print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False):
+def _print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False):
     kwarg['sep'] = sep
     kwarg['end'] = end
     kwarg['file'] = file
@@ -207,73 +207,73 @@ def print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False):
     return print(*objects, **kwarg)
 
 
-def property(fget=None, fset=None, fdel=None, doc=None):
+def _property(fget=None, fset=None, fdel=None, doc=None):
     return property(fget, fset, fdel, doc)
 
 
-def range(start, stop, step=1):
+def _range(start, stop, step=1):
     return range(start, stop, step)
 
 
-def repr(object):
+def _repr(object):
     return repr(object)
 
 
-def reversed(seq):
+def _reversed(seq):
     return reversed(seq)
 
 
-def round(number, ndigits=0):
+def _round(number, ndigits=0):
     return round(number, ndigits)
 
 
-def set(iterable):
+def _set(iterable):
     return set(iterable)
 
 
-def setattr(object, name, value):
+def _setattr(object, name, value):
     return setattr(object, name, value)
 
 
-def slice(start, stop, step=1):
+def _slice(start, stop, step=1):
     return slice(start, stop, step)
 
 
-def sorted(iterable):
+def _sorted(iterable):
     return sorted(iterable)
 
 
-def staticmethod():
+def _staticmethod():
     raise NotImplementedError
 
 
-def str(object=''):
+def _str(object=''):
     return str(object)
 
 
-def sum(iterable, start=0):
+def _sum(iterable, start=0):
     return sum(iterable, start)
 
 
-def super():
+def _super():
     raise NotImplementedError
 
     
-def tuple(iterable):
+def _tuple(iterable):
     return tuple(iterable)
 
 
-def type(object):
+def _type(object):
     return type(object)
 
 
-def vars(object):
+def _vars(object):
     return vars(object)
 
 
-def zip(*iterables):
+def _zip(*iterables):
     return zip(*iterables)
 
 
-def __import__(name, globals=None, locals=None, fromlist=(), level=0):
+def _import(name, globals=None, locals=None, fromlist=(), level=0):
     return __import__(name, globals, locals, fromlist, level)
